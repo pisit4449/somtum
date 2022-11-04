@@ -21,6 +21,8 @@ root.title("Pupea Shop")
 root.iconbitmap('images/dog.ico')
 root.geometry("1350x700+0+0")
 # root.state('zoomed') 
+style = ttk.Style(root)
+style.theme_use('vista')
 
 #================== Menu Bar ============================================================
 menubar = Menu(root)
@@ -58,10 +60,12 @@ def SearchTable(event=None):
     # [(12, 'PEA-221102214443', '02/11/2022 21:44:54', '11', 'ST-1001', 'ตำไทย', 50.0, 2, 100.0)
     try:
         res = pd.Show_Order_Single(tables)
-        print('RES ====>',res)
-        print('RES ======>',res[0][3])
-        productid = res[0][3]
-        checkbill.command()
+        # print('RES ====>',res)
+        # [(16, 'PEA-221102214504', '02/11/2022 21:45:17', '33', 'ST-1004', 'ตำปูนา', 100.0, 1, 100.0)]
+        # print('RES ======>',res[0][3])  RES ======> 33
+        Table = res[0][3]
+        checkbill.popup(Table)
+        
         
     except:
         messagebox.showwarning('Not Found','ไม่สินค้าในโต๊ะที่คุณค้นหา')
@@ -78,18 +82,17 @@ Bsearch.grid(row=0, column=1, padx=10,ipadx=30,ipady=5)
 Frame_table_number = Frame(root)
 Frame_table_number.place(x=20, y=150)
 
+
 allorder = {}
 allproduct = pd.Product_Icon_List()
 # print('allproduct ============>',allproduct)
 #allproduct = {1: {'id': 1, 'productcode': 'ST-1001', 'title': 'ตำไทย', 'price': 50.0, 'image': 'c:\\Images\}
+# print('Allorder =======>',allorder)
 def InsertTableOrder():
     table_order.delete(*table_order.get_children())
     for i ,m in enumerate(allorder.values(),start=1):
-        # print('M =======>',m)  # M =======> [1, 'ST-1001', 'ตำไทย', 50.0, 1, 50.0]
+        # print('Allorder M =======>',m)  # M =======> [1, 'ST-1001', 'ตำไทย', 50.0, 1, 50.0]
         table_order.insert('', END, values=[i ,m[0],m[1],m[2],m[3],m[4],m[5]])
-
-
-
 
 
 
@@ -216,6 +219,7 @@ def ResetOrder():
     stramp = datetime.now().strftime('PEA-'+'%y%m%d%H%M%S')
     v_transaction.set(stramp)
     v_table.set('')
+    v_search.set('')
 
 
 

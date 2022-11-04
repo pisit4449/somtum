@@ -79,15 +79,47 @@ def Show_Order_Single(ID):
         command = 'SELECT * FROM productorder WHERE tablenum=(?)'
         c.execute(command,([ID]))
         result = c.fetchall()
-    # print(result)
+    # print(result) [(12, 'PEA-221102214443', '02/11/2022 21:44:54', '11', 'ST-1001', 'ตำไทย', 50.0, 2, 100.0)]
     return result 
 
 
+def Show_Order_Dict(Table):
+    with conn:
+        command = 'SELECT * FROM productorder WHERE tablenum=(?)'
+        c.execute(command,([Table]))
+        order = c.fetchall()
+    # print("ORDER ===>",order)
+    
+    result = []
 
+    for o in order:
+        result.append(o)
+        # print('RESULT=======>',result)
+        # RESULT=======> [(19, 'PEA-221103190832', '03/11/2022 19:08:42', '44', 'ST-1004', 'ตำปูนา', 100.0, 1, 100.0)]
+    result_dict = {}
+
+    for r in result:
+        result_dict[r[0]] = {'id':r[0],'transaction':r[1],'time':r[2],'table':r[3],'productcode':r[4],'title':r[5],'price':r[6],'quan':r[7],'total':r[8]}
+
+    # print('RESULT DICT ========>',result_dict)
+    return order
+
+    
+    #RESULT DICT ========> {19: {'id': 19, 'transaction': 'PEA-221103190832', 'time': '03/11/2022 19:08:42', 'table': '44', 'productcode': 'ST-1004', 'title': 'ตำปูนา', 'price': 100.0, 'quan': 1, 'total': 100.0},
+
+def Show_Order_Table_Title(Table):
+    with conn:
+        command = 'SELECT * FROM productorder WHERE tablenum=(?)'
+        c.execute(command,([Table]))
+        order = c.fetchall()
+    print("ORDER ===>",order)
+    return order
 
 
 if __name__=='__main__':
     # pass
     # Insert_Product('ST-1004','ตำปูนา',100,r'c:\Images\espresso.png')
     # Product_Icon_List()
-    Show_Order_Single(11)
+    # Show_Order_Single(11)
+    Show_Order_Dict(44)
+    # Show_Order_Table_Title(1,'ตำไทย')
